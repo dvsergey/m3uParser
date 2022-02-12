@@ -1,6 +1,7 @@
 {
   "name": "dvsergey/m3u-parser",
   "description": "php parser for m3u files",
+  "keywords": ["m3u", "m3u8", "parser"],
   "authors": [
     {
       "name": "Sergey",
