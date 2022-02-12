@@ -7,10 +7,10 @@
       "email": "dsv0@ya.ru"
     }
   ],
-  "minimum-stability": "dev",
   "type": "package",
+  "minimum-stability": "stable",
   "require": {
-    "php": ">=7.4.0"
+    "php": ">=7.4"
   },
   "license": "mit",
   "autoload": {
