@@ -28,6 +28,6 @@ class ExtInfParser
     private static function getName(string $extInf): string
     {
         $data = explode(',', $extInf);
-        return isset($data[1]) ? $data[1] : '';
+        return count($data) > 1 ? end($data) : '';
     }
 }
