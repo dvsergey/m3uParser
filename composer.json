@@ -8,12 +8,9 @@
       "email": "dsv0@ya.ru"
     }
   ],
-  "type": "package",
-  "minimum-stability": "stable",
   "require": {
     "php": ">=7.4"
   },
-  "license": "mit",
   "autoload": {
     "psr-4": {
       "dsv\\": "src/"
