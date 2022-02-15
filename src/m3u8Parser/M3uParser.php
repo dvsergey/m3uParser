@@ -22,10 +22,18 @@ final class M3uParser implements ISingleton
 
         foreach ($array as $item) {
             if (isset($item['EXTINF'])) {
-                $extInf = ExtInfParser::parse($item['EXTINF']);
+                $extInf = ExtInfParser::parse($item['EXTINF'] ?? '');
+                $groupName = ExtgrpParser::parse($item['EXTGRP'] ?? '');
+                $userAgent = ExtvlcoptParser::parse($item['EXTVLCOPT'] ?? '');
                 if ($extInf) {
                     $m3uData = (array)$extInf;
                     $m3uData['url'] = $item['url'];
+                    if ($groupName) {
+                        $m3uData['groupName'] = $groupName;
+                    }
+                    if ($userAgent) {
+                        $m3uData['userAgent'] = $userAgent;
+                    }
                     $this->items[] = new M3uItem($m3uData);
                 }
             }
@@ -46,7 +54,7 @@ final class M3uParser implements ISingleton
         return $raw;
     }
 
-    public function prepareData($raw): array
+    private function prepareData($raw): array
     {
         $raw = $this->prepareAttributes($raw);
         $array = explode("\n", $raw);
@@ -77,10 +85,13 @@ final class M3uParser implements ISingleton
         return $this->m3uFile;
     }
 
-    /** @param string $m3ufile */
-    public function setM3uFile(string $m3uFile): void
+    /** @param string $m3ufile
+     * @return M3uParser
+     */
+    public function setM3uFile(string $m3uFile): self
     {
         $this->m3uFile = $m3uFile;
+        return $this;
     }
 
 }

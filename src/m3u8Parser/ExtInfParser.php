@@ -11,15 +11,17 @@ class ExtInfParser
     public static function parse(string $extInf): ?ExtInfDto
     {
         $extInfDto = null;
-        preg_match_all(self::$regAttributes, $extInf, $matches);
-        if (!empty($matches)) {
-            $array = [];
-            foreach ($matches[1] as $i => $name) {
-                $array[$name] = $matches[2][$i];
-            }
-            $extInfDto = new ExtInfDto($array);
-            if (!$extInfDto->name) {
-                $extInfDto->name = self::getName($extInf);
+        if ($extInf) {
+            preg_match_all(self::$regAttributes, $extInf, $matches);
+            if (!empty($matches)) {
+                $array = [];
+                foreach ($matches[1] as $i => $name) {
+                    $array[$name] = $matches[2][$i];
+                }
+                $extInfDto = new ExtInfDto($array);
+                if (!$extInfDto->name) {
+                    $extInfDto->name = self::getName($extInf);
+                }
             }
         }
         return $extInfDto;
