@@ -6,6 +6,11 @@ abstract class Dto
 {
     public function __construct(array $params)
     {
+        $this->load($params);
+    }
+
+    public function load(array $params)
+    {
         foreach ($params as $param => $value) {
             $this->setParam($param, $value);
         }
