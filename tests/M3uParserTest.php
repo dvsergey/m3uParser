@@ -7,7 +7,7 @@ use PHPUnit\Framework\TestCase;
 
 class M3uParserTest extends TestCase
 {
-    public function testM3uParser(): void
+    public function testParser(): void
     {
         $m3uParser = new M3uParser();
 
@@ -31,6 +31,7 @@ class M3uParserTest extends TestCase
                         'logo' => 'cover.jpg',
                         'country' => null,
                         'language' => null,
+                        'runtime' => 123,
                         'url' => 'http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4',
                         'userAgent' => null,
                     ]),
@@ -49,6 +50,7 @@ class M3uParserTest extends TestCase
                         'groupName' => null,
                         'logo' => null,
                         'country' => null,
+                        'runtime' => 321,
                         'language' => null,
                         'url' => 'http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4',
                         'userAgent' => null,
@@ -56,5 +58,20 @@ class M3uParserTest extends TestCase
             ]
             , $m3uParser->parse()
         );
+    }
+
+    public function testToM3u()
+    {
+        {
+            $m3uParser = new M3uParser();
+
+            $m3uParser->setM3uFile(__DIR__ . '/testfile.m3u8');
+            $m3uParser->parse();
+
+            $this->assertEquals(
+                file_get_contents(__DIR__ . '/testfile.m3u8'),
+                $m3uParser->toM3u()
+            );
+        }
     }
 }

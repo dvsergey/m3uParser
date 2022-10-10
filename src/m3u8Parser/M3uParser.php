@@ -11,8 +11,8 @@ final class M3uParser implements ISingleton
     use TSingleton;
 
     private const EXT_X = '#EXT-X-';
+    private const REGEX = '/#([a-zA-Z0-9\-_]+?):/';
     private string $m3uFile;
-    private string $reg = '/#([a-zA-Z0-9\-\_]+?):/';
     /** @var M3uItem[] */
     public array $items = [];
 
@@ -27,7 +27,6 @@ final class M3uParser implements ISingleton
 
                 if ($extInf) {
                     $m3uData = (array) $extInf;
-
                     $extXInfs = [];
                     foreach ($item as $extXInf) {
                         if (str_starts_with($extXInf, self::EXT_X)) {
@@ -77,7 +76,7 @@ final class M3uParser implements ISingleton
         $i = 0;
         foreach ($array as $item) {
             $name = 'url';
-            preg_match($this->reg, $item, $matches);
+            preg_match(self::REGEX, $item, $matches);
             if (isset($matches[1])) {
                 $name = $matches[1];
             }
@@ -92,20 +91,24 @@ final class M3uParser implements ISingleton
         return $data;
     }
 
-
-    /** @return string */
     private function getM3uFile(): string
     {
         return $this->m3uFile;
     }
 
-    /** @param string $m3ufile
-     * @return M3uParser
-     */
     public function setM3uFile(string $m3uFile): self
     {
         $this->m3uFile = $m3uFile;
         return $this;
     }
 
+    public function toM3u(): string
+    {
+        $string = '#EXTM3U' . PHP_EOL . PHP_EOL;
+        foreach ($this->items as $m3uItem) {
+            $string .= $m3uItem->toM3uPart() . PHP_EOL;
+        }
+
+        return $string;
+    }
 }
