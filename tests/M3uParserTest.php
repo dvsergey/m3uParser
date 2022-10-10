@@ -60,17 +60,17 @@ class M3uParserTest extends TestCase
         );
     }
 
-    public function testToM3u()
+    public function testToM3u(): void
     {
         {
             $m3uParser = new M3uParser();
 
             $m3uParser->setM3uFile(__DIR__ . '/testfile.m3u8');
-            $m3uParser->parse();
+            $items = $m3uParser->parse();
 
             $this->assertEquals(
                 file_get_contents(__DIR__ . '/testfile.m3u8'),
-                $m3uParser->toM3u()
+                $m3uParser->toM3u($items)
             );
         }
     }

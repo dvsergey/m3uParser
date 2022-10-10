@@ -1,10 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
 namespace dsv\m3u8Parser;
 
 use dsv\m3u8Parser\Dto\M3uItem;
 use dsv\Pattern\Singleton\ISingleton;
 use dsv\Pattern\Singleton\TSingleton;
+use http\Exception\RuntimeException;
 
 final class M3uParser implements ISingleton
 {
@@ -13,18 +16,18 @@ final class M3uParser implements ISingleton
     private const EXT_X = '#EXT-X-';
     private const REGEX = '/#([a-zA-Z0-9\-_]+?):/';
     private string $m3uFile;
-    /** @var M3uItem[] */
-    public array $items = [];
 
-    public function parse()
+    /** @return M3uItem[] */
+    public function parse(): array
     {
+        $m3uItems = [];
+
         $raw = $this->getM3uRaw();
         $array = $this->prepareData($raw);
 
         foreach ($array as $item) {
             if (isset($item['EXTINF'])) {
                 $extInf = ExtInfParser::parse($item['EXTINF'] ?? '');
-
                 if ($extInf) {
                     $m3uData = (array) $extInf;
                     $extXInfs = [];
@@ -47,27 +50,30 @@ final class M3uParser implements ISingleton
 
                     $m3uData['url'] = $item['url'];
 
-                    $this->items[] = new M3uItem($m3uData);
+                    $m3uItems[] = M3uItem::fromArray($m3uData);
                 }
             }
         }
-        return $this->items;
+        return $m3uItems;
     }
 
-    private function getM3uRaw()
+    private function getM3uRaw(): string
     {
-        return file_get_contents($this->getM3uFile());
+        $stringContent = file_get_contents($this->m3uFile);
+        if ($stringContent === false) {
+            throw new RuntimeException('Could not read M3u file ' . $this->m3uFile);
+        }
+        return $stringContent;
     }
 
-    private function prepareAttributes($raw)
+    private function prepareAttributes(string $raw): array|string
     {
         $raw = str_replace('tvg-', '', $raw);
         $raw = str_replace('group-title', 'groupName', $raw);
-        $raw = str_replace('user-agent', 'userAgent', $raw);
-        return $raw;
+        return str_replace('user-agent', 'userAgent', $raw);
     }
 
-    private function prepareData($raw): array
+    private function prepareData(string $raw): array
     {
         $raw = $this->prepareAttributes($raw);
         $array = explode("\n", $raw);
@@ -102,10 +108,13 @@ final class M3uParser implements ISingleton
         return $this;
     }
 
-    public function toM3u(): string
+    /**
+     * @param M3uItem[] $items
+     */
+    public function toM3u(array $items): string
     {
         $string = '#EXTM3U' . PHP_EOL . PHP_EOL;
-        foreach ($this->items as $m3uItem) {
+        foreach ($items as $m3uItem) {
             $string .= $m3uItem->toM3uPart() . PHP_EOL;
         }
 

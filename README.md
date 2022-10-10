@@ -25,6 +25,7 @@ foreach ($parser->items as $m3uItem) {
 
 ### Tests
 
+`vendor/bin/phpstan`
 `vendor/bin/phpunit`
 
 #### Questions?
