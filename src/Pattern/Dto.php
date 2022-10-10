@@ -9,14 +9,14 @@ abstract class Dto
         $this->load($params);
     }
 
-    public function load(array $params)
+    public function load(array $params): void
     {
         foreach ($params as $param => $value) {
             $this->setParam($param, $value);
         }
     }
 
-    private function setParam($param, $value)
+    private function setParam($param, $value): void
     {
         if (property_exists($this, $param)) {
             $this->{$param} = $value;

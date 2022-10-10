@@ -1,6 +1,6 @@
 <div align="center">
     <h1>m3u Content Parser</h1>
-    <h5>Minimalistic, easy to use m3u playlist parser</h5>
+    <h5>Minimalistic, easy to use, object orientated m3u playlist parser</h5>
 </div>
 
 ### Example usage
@@ -20,6 +20,10 @@ var_dump($data);
 ### Installation
 
 `composer require dvsergey/m3u-parser:@dev`
+
+### Tests
+
+`vendor/bin/phpunit`
 
 #### Questions?
 

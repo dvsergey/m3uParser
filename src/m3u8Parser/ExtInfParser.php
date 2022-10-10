@@ -6,13 +6,13 @@ use dsv\m3u8Parser\Dto\ExtInfDto;
 
 class ExtInfParser
 {
-    private static string $regAttributes = '/([a-zA-Z0-9\-\_]+?)="([^"]*)"/';
+    private const REG_FILTER = '/([a-zA-Z0-9\-_]+?)="([^"]*)"/';
 
     public static function parse(string $extInf): ?ExtInfDto
     {
         $extInfDto = null;
         if ($extInf) {
-            preg_match_all(self::$regAttributes, $extInf, $matches);
+            preg_match_all(self::REG_FILTER, $extInf, $matches);
             if (!empty($matches)) {
                 $array = [];
                 foreach ($matches[1] as $i => $name) {

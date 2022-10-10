@@ -10,6 +10,7 @@ final class M3uParser implements ISingleton
 {
     use TSingleton;
 
+    private const EXT_X = '#EXT-X-';
     private string $m3uFile;
     private string $reg = '/#([a-zA-Z0-9\-\_]+?):/';
     /** @var M3uItem[] */
@@ -23,17 +24,30 @@ final class M3uParser implements ISingleton
         foreach ($array as $item) {
             if (isset($item['EXTINF'])) {
                 $extInf = ExtInfParser::parse($item['EXTINF'] ?? '');
-                $groupName = ExtgrpParser::parse($item['EXTGRP'] ?? '');
-                $userAgent = ExtvlcoptParser::parse($item['EXTVLCOPT'] ?? '');
+
                 if ($extInf) {
-                    $m3uData = (array)$extInf;
-                    $m3uData['url'] = $item['url'];
+                    $m3uData = (array) $extInf;
+
+                    $extXInfs = [];
+                    foreach ($item as $extXInf) {
+                        if (str_starts_with($extXInf, self::EXT_X)) {
+                            $extXInfs[] = ExtXInfParser::parse($extXInf);
+                        }
+                    }
+                    $m3uData['extInfs'] = $extXInfs;
+
+                    $groupName = ExtgrpParser::parse($item['EXTGRP'] ?? '');
                     if ($groupName) {
                         $m3uData['groupName'] = $groupName;
                     }
+
+                    $userAgent = ExtvlcoptParser::parse($item['EXTVLCOPT'] ?? '');
                     if ($userAgent) {
                         $m3uData['userAgent'] = $userAgent;
                     }
+
+                    $m3uData['url'] = $item['url'];
+
                     $this->items[] = new M3uItem($m3uData);
                 }
             }

@@ -15,5 +15,9 @@
     "psr-4": {
       "dsv\\": "src/"
     }
+  },
+  "require-dev": {
+    "symfony/var-dumper": "^6.0",
+    "phpunit/phpunit": "^9.5"
   }
 }

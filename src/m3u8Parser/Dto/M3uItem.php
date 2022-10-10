@@ -6,13 +6,15 @@ use dsv\Pattern\Dto;
 
 class M3uItem extends Dto
 {
-    public $id;
-    public $name;
-    public $groupName;
-    public $logo;
-    public $country;
-    public $language;
-    public $url;
-    public $userAgent;
+    /** @var ExtXInfDto[] */
+    public array $extInfs = [];
 
+    public ?string $id;
+    public ?string $name;
+    public ?string $groupName;
+    public ?string $logo;
+    public ?string $country;
+    public ?string $language;
+    public ?string $url;
+    public ?string $userAgent;
 }

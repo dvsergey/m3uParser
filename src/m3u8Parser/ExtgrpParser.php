@@ -4,17 +4,14 @@ namespace dsv\m3u8Parser;
 
 class ExtgrpParser
 {
-    private static string $regAttributes = '/.+?:(.*)/';
+    private const REG_FILTER = '/.+?:(.*)/';
 
     public static function parse(string $extgrp): ?string
     {
-        $groupName = null;
-        if ($extgrp) {
-            preg_match_all(self::$regAttributes, $extgrp, $matches);
-            if (!empty($matches[1])) {
-                $groupName = $matches[1][0];
-            }
+        preg_match_all(self::REG_FILTER, $extgrp, $matches);
+        if (!empty($matches[1])) {
+            return $matches[1][0];
         }
-        return $groupName;
+        return null;
     }
 }
