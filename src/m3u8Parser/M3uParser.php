@@ -66,7 +66,7 @@ final class M3uParser implements ISingleton
         return $stringContent;
     }
 
-    private function prepareAttributes(string $raw): array|string
+    private function prepareAttributes(string $raw): string
     {
         $raw = str_replace('tvg-', '', $raw);
         $raw = str_replace('group-title', 'groupName', $raw);
@@ -95,11 +95,6 @@ final class M3uParser implements ISingleton
         }
 
         return $data;
-    }
-
-    private function getM3uFile(): string
-    {
-        return $this->m3uFile;
     }
 
     public function setM3uFile(string $m3uFile): self

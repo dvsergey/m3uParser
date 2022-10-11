@@ -2,7 +2,7 @@ parameters:
     checkMissingIterableValueType: false
     inferPrivatePropertyTypeFromConstructor: true
     checkGenericClassInNonGenericObjectType: false
-    level: 7
+    level: 5
     paths:
         - ./src/
         - ./tests/

@@ -16,8 +16,8 @@ class M3uParserTest extends TestCase
         $this->assertEquals(
             [
                 0 =>
-                    new dsv\m3u8Parser\Dto\M3uItem([
-                        'extInfs' =>
+                    dsv\m3u8Parser\Dto\M3uItem::fromArray([
+                        'extXInfs' =>
                             [
                                 0 =>
                                     new dsv\m3u8Parser\Dto\ExtXInfDto(
@@ -36,13 +36,18 @@ class M3uParserTest extends TestCase
                         'userAgent' => null,
                     ]),
                 1 =>
-                    new dsv\m3u8Parser\Dto\M3uItem([
-                        'extInfs' =>
+                    dsv\m3u8Parser\Dto\M3uItem::fromArray([
+                        'extXInfs' =>
                             [
                                 0 =>
                                     new dsv\m3u8Parser\Dto\ExtXInfDto(
                                         '#EXT-X-AVAILABLE-UNTIL-DATE-TIME',
                                         '2010-02-19T14:54:23.031+08:00',
+                                    ),
+                                1 =>
+                                    new dsv\m3u8Parser\Dto\ExtXInfDto(
+                                        '#EXT-X-B',
+                                        'Extra Info B',
                                     ),
                             ],
                         'id' => null,

@@ -6,5 +6,6 @@ http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp
 
 #EXTINF:321,ElephantsDream - ElephantsDream
 #EXT-X-AVAILABLE-UNTIL-DATE-TIME:2010-02-19T14:54:23.031+08:00
+#EXT-X-B:Extra Info B
 http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4
 
