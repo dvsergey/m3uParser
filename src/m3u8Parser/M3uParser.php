@@ -36,7 +36,7 @@ final class M3uParser implements ISingleton
                             $extXInfs[] = ExtXInfParser::parse($extXInf);
                         }
                     }
-                    $m3uData['extInfs'] = $extXInfs;
+                    $m3uData['extXInfs'] = $extXInfs;
 
                     $groupName = ExtgrpParser::parse($item['EXTGRP'] ?? '');
                     if ($groupName) {
