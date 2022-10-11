@@ -16,8 +16,8 @@ class M3uParserTest extends TestCase
         $this->assertEquals(
             [
                 0 =>
-                    new dsv\m3u8Parser\Dto\M3uItem([
-                        'extInfs' =>
+                    dsv\m3u8Parser\Dto\M3uItem::fromArray([
+                        'extXInfs' =>
                             [
                                 0 =>
                                     new dsv\m3u8Parser\Dto\ExtXInfDto(
@@ -36,13 +36,18 @@ class M3uParserTest extends TestCase
                         'userAgent' => null,
                     ]),
                 1 =>
-                    new dsv\m3u8Parser\Dto\M3uItem([
-                        'extInfs' =>
+                    dsv\m3u8Parser\Dto\M3uItem::fromArray([
+                        'extXInfs' =>
                             [
                                 0 =>
                                     new dsv\m3u8Parser\Dto\ExtXInfDto(
                                         '#EXT-X-AVAILABLE-UNTIL-DATE-TIME',
                                         '2010-02-19T14:54:23.031+08:00',
+                                    ),
+                                1 =>
+                                    new dsv\m3u8Parser\Dto\ExtXInfDto(
+                                        '#EXT-X-B',
+                                        'Extra Info B',
                                     ),
                             ],
                         'id' => null,
@@ -60,17 +65,17 @@ class M3uParserTest extends TestCase
         );
     }
 
-    public function testToM3u()
+    public function testToM3u(): void
     {
         {
             $m3uParser = new M3uParser();
 
             $m3uParser->setM3uFile(__DIR__ . '/testfile.m3u8');
-            $m3uParser->parse();
+            $items = $m3uParser->parse();
 
             $this->assertEquals(
                 file_get_contents(__DIR__ . '/testfile.m3u8'),
-                $m3uParser->toM3u()
+                $m3uParser->toM3u($items)
             );
         }
     }

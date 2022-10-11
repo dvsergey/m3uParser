@@ -2,12 +2,14 @@
 
 namespace dsv\m3u8Parser\Dto;
 
-use dsv\Pattern\Dto;
+use dsv\Pattern\DtoTrait;
 
-class M3uItem extends Dto
+class M3uItem
 {
+    use DtoTrait;
+
     /** @var ExtXInfDto[] */
-    public array $extInfs = [];
+    public array $extXInfs = [];
 
     public ?string $id;
     public ?string $name;
@@ -23,11 +25,11 @@ class M3uItem extends Dto
     {
         $string = '#EXTINF:' . $this->runtime;
         if (!empty ($this->logo)) {
-            $string .= ' logo="' . $this->logo.'"';
+            $string .= ' logo="' . $this->logo . '"';
         }
 
         $string .= ',' . $this->name . PHP_EOL;
-        foreach ($this->extInfs as $extXInfDto) {
+        foreach ($this->extXInfs as $extXInfDto) {
             $string .= $extXInfDto->directive . ':' . $extXInfDto->value . PHP_EOL;
         }
         $string .= $this->url . PHP_EOL;

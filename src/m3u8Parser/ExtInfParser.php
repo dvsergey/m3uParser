@@ -11,27 +11,27 @@ class ExtInfParser
 
     public static function parse(string $extInf): ?ExtInfDto
     {
-        $extInfDto = null;
-        if ($extInf) {
-            preg_match_all(self::REG_FILTER_ADDITIONAL_PROPERTIES, $extInf, $matches);
-            if (!empty($matches)) {
-                $array = [];
-                foreach ($matches[1] as $i => $name) {
-                    $array[$name] = $matches[2][$i];
-                }
-                $extInfDto = new ExtInfDto($array);
-
-                preg_match(self::REG_RUNTIME, $extInf, $matches2);
-                if (!empty($matches2[1])) {
-                    $extInfDto->runtime = $matches2[1];
-                }
-
-                if (!$extInfDto->name) {
-                    $extInfDto->name = self::getName($extInf);
-                }
-            }
+        if (empty($extInf)) {
+            return null;
         }
-        return $extInfDto;
+        preg_match_all(self::REG_FILTER_ADDITIONAL_PROPERTIES, $extInf, $matches);
+
+        if (empty($matches)) {
+            return null;
+        }
+        $array = [];
+        foreach ($matches[1] as $i => $name) {
+            $array[$name] = $matches[2][$i];
+        }
+
+        preg_match(self::REG_RUNTIME, $extInf, $runtimeMatch);
+        if (!empty($runtimeMatch[1])) {
+            $array['runtime'] = $runtimeMatch[1];
+        }
+
+        $array['name'] = self::getName($extInf);
+
+        return ExtInfDto::fromArray($array);
     }
 
     private static function getName(string $extInf): string
